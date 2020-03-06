@@ -1,4 +1,6 @@
 module CryptoSquare (encode) where
+
+import qualified Control.Monad as M
 import qualified Data.Text as T
 import qualified Data.Char as C
 
@@ -7,13 +9,13 @@ addTrailing = map . (`T.justifyLeft` ' ')
 
 splitInchunks :: T.Text -> [T.Text]
 splitInchunks xs = addTrailing r $ T.chunksOf r xs
-    where r = ceiling $ sqrt $ (fromIntegral :: Int -> Double) $ T.length xs 
+    where 
+        r = ceiling $ sqrt $ toDouble $ T.length xs
+        toDouble = fromIntegral :: Int -> Double
 
-removePunctuation :: String -> String
-removePunctuation = filter $ not . or . sequence [C.isSpace, C.isPunctuation]
-
-toLowerString :: String -> String
-toLowerString = map C.toLower
+removePunctuation :: T.Text -> T.Text
+removePunctuation = T.filter $ not . isUnwanted
+    where isUnwanted = M.liftM2 (||) C.isSpace C.isPunctuation
 
 encode :: String -> String
-encode = T.unpack . T.unwords . T.transpose . splitInchunks . T.pack . toLowerString . removePunctuation
+encode = T.unpack . T.unwords . T.transpose . splitInchunks . T.toLower . removePunctuation . T.pack 
