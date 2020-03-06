@@ -6,11 +6,11 @@ isYelling = and . sequence [not . null, all C.isUpper] . filter C.isAlpha
 
 isQuestion :: String -> Bool
 isQuestion [] = False
-isQuestion xs = '?' == (head $ filter (not . C.isSpace) xs)
+isQuestion xs = '?' == last $ filter (not . C.isSpace) xs
 
 responseFor :: String -> String
 responseFor xs  | all C.isSpace xs = "Fine. Be that way!"
-                | isQuestion (reverse xs)  = case () of 
+                | isQuestion xs  = case () of 
                  _ | isYelling xs -> "Calm down, I know what I'm doing!"
                     | otherwise -> "Sure."
                 | isYelling xs = "Whoa, chill out!"
