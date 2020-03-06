@@ -2,14 +2,11 @@ module Anagram (anagramsFor) where
 import Data.List
 import Data.Char
 
-areTheSame :: [String] -> Bool
-areTheSame list = and $ zipWith (==) list (tail list)
-
-toUpperList :: [String] -> [String]
-toUpperList = map (map toUpper)
+toUpperString :: String -> String
+toUpperString = map toUpper
 
 anagram :: String -> String -> Bool
-anagram a b = and $ sequence [not . areTheSame, areTheSame . map sort] $ (toUpperList [a, b])
+anagram a b = a /= toUpperString b && sort a == sort (toUpperString b)
 
 anagramsFor :: String -> [String] -> [String]
-anagramsFor xs xss = filter (anagram xs) xss
+anagramsFor xs = filter (anagram $ toUpperString xs)
