@@ -4,6 +4,8 @@ version: 3.2.0.6
 dependencies:
   - base
 
+extensions: OverloadedStrings
+
 library:
   exposed-modules: CryptoSquare
   source-dirs: src
