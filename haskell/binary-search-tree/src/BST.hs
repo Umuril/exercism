@@ -12,24 +12,24 @@ module BST
 
 import qualified Data.List as L
 
-data BST a = HACK | Node (BST a) a (BST a) deriving (Eq, Show)
+data BST a = EMPTY | LEAF a | Node (BST a) (BST a) deriving (Eq, Show)
+
+-- TO COMPLETE
 
 bstLeft :: BST a -> Maybe (BST a)
-bstLeft HACK = Nothing
-bstLeft (Node HACK _ _) = Nothing
-bstLeft (Node l _ _) = Just l
+bstLeft (Node l r) = Just l
+bstLeft _ = Nothing
 
 bstRight :: BST a -> Maybe (BST a)
-bstRight HACK = Nothing
-bstRight (Node _ _ HACK) = Nothing
-bstRight (Node _ _ r) = Just r
+bstRight (Node l r) = Just r
+bstRight _ = Nothing
 
 bstValue :: BST a -> Maybe a
-bstValue HACK = Nothing
-bstValue (Node _ v _) = Just v
+bstValue (LEAF v) = v
+
 
 empty :: BST a
-empty = HACK 
+empty = EMPTY 
 
 fromList :: Ord a => [a] -> BST a
 fromList [] = HACK
