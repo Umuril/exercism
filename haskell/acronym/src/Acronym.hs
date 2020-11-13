@@ -5,13 +5,19 @@ import Data.Maybe
 import Data.Char
 import Text.Regex
 
+regexes :: [(String, String -> String)]
+regexes = [
+    ("^[A-Z]+$", (:[]) . head),
+    ("^[a-z]+$", (:[]) . toUpper . head),
+    ("^[A-Z]", filter isUpper),
+    ("^[a-zA-Z!?-]+$", intercalate "" . map extractAcronym . splitOneOf "-!?"),
+    ("^[\\w\\s_]+[A-Za-z]", extractAcronym . tail)
+    ]
+
 extractAcronym :: String -> String
-extractAcronym word | isJust $ matchRegex (mkRegex "^[A-Z]+$") word = [head word]
-                    | isJust $ matchRegex (mkRegex "^[a-z]+$") word = [toUpper $ head word]
-                    | isJust $ matchRegex (mkRegex "^[A-Z]") word = filter isUpper word
-                    | isJust $ matchRegex (mkRegex "^[a-zA-Z]+[!-?][a-zA-Z]+$") word = intercalate "" $ map extractAcronym $ splitOneOf "!-?" word
-                    | isJust $ matchRegex (mkRegex "^[^\\w\\s]*[A-Za-z]") word = extractAcronym $ tail word
-                    | otherwise = ""
+extractAcronym word = case filter (\reg -> isJust $ matchRegex (mkRegex $ fst reg) word) regexes of
+                    [] -> ""
+                    (x:_) -> snd x word
 
 abbreviate :: String -> String
 abbreviate xs = intercalate "" (map extractAcronym (words xs))
