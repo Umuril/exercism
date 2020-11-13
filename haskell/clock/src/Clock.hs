@@ -1,14 +1,14 @@
 module Clock (addDelta, fromHourMin, toString) where
 import Text.Printf
 
-data Clock = Clock { hour :: Int, min :: Int }
+data Clock = Clock { _hour :: Int, _min :: Int }
   deriving Eq
 
 fromHourMin :: Int -> Int -> Clock
-fromHourMin hour min = Clock (mod (hour + div min 60) 24) (mod min 60)
+fromHourMin h m = Clock (mod (h + div m 60) 24) (mod m 60)
 
 toString :: Clock -> String
-toString clock = printf "%02d:%02d" (Clock.hour clock) (Clock.min clock)
+toString (Clock h m) = printf "%02d:%02d" h m
 
 addDelta :: Int -> Int -> Clock -> Clock
-addDelta h m clock = fromHourMin (h + (Clock.hour clock)) (m + (Clock.min clock))
+addDelta h m (Clock hh mm) = fromHourMin (h + hh) (m + mm)
