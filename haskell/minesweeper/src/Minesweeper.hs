@@ -3,6 +3,8 @@ import qualified Data.Char as C
 import qualified Data.Matrix as M
 import qualified Data.Vector as V
 
+-- TO BE REVIEWED
+
 createTuple :: (Int, Int) -> Char -> (Int, Int, Char)
 createTuple (r,c) value = (r, c, value)
 
@@ -13,7 +15,7 @@ setValue :: [(Int, Int)] -> (Int, Int) -> Char -> Char
 setValue points (r,c) value
     | value == '*' = '*'
     | near == 0 = ' '
-    | otherwise = C.intToDigit $ near
+    | otherwise = C.intToDigit near
     where near = length $ filter (isNear (r, c)) points
 
 annotate :: [String] -> [String]
