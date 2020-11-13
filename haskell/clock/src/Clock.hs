@@ -1,6 +1,8 @@
 module Clock (addDelta, fromHourMin, toString) where
 import Text.Printf
 
+-- TO BE REVIEWED
+
 data Clock = Clock { _hour :: Int, _min :: Int }
   deriving Eq
 
