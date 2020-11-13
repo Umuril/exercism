@@ -1,5 +1,7 @@
 module Prime (nth) where
 
+-- Waiting for approval
+
 isPrime :: Integer -> Bool
 isPrime n   | n == 1 = False 
             | n == 2 = True 
