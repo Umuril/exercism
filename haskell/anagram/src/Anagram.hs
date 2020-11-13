@@ -2,11 +2,12 @@ module Anagram (anagramsFor) where
 import Data.List
 import Data.Char
 
-toUpperString :: String -> String
-toUpperString = map toUpper
+toLowerString :: String -> String
+toLowerString = map toLower
 
 anagram :: String -> String -> Bool
-anagram a b = a /= toUpperString b && sort a == sort (toUpperString b)
+anagram a b = a /= c && sort a == sort c
+    where c = toLowerString b 
 
 anagramsFor :: String -> [String] -> [String]
-anagramsFor xs = filter (anagram $ toUpperString xs)
+anagramsFor = filter . anagram . toLowerString
