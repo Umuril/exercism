@@ -1,0 +1,7 @@
+[dependencies]
+phf = { version = "0.7.24", features = ["macros"] }
+
+[package]
+edition = "2018"
+name = "raindrops"
+version = "1.1.0"
