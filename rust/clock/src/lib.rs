@@ -1,44 +1,40 @@
 use std::fmt;
 
+#[derive(PartialEq, fmt::Debug)]
 pub struct Clock {
-    hours: i32,
     minutes: i32,
 }
 
+const MINUTES_IN_HOUR: i32 = 60;
+const HOURS_IN_DAY: i32 = 24;
+const MINUTES_IN_DAY: i32 = HOURS_IN_DAY * MINUTES_IN_HOUR;
+
 impl Clock {
-    pub fn new(hours: i32, minutes: i32) -> Self {
+    pub fn from_minutes(minutes: i32) -> Self {
         Clock {
-            hours: (hours + minutes.div_euclid(60)).rem_euclid(24),
-            minutes: minutes.rem_euclid(60),
+            minutes: minutes.rem_euclid(MINUTES_IN_DAY),
         }
     }
 
-    pub fn add_minutes(&self, minutes: i32) -> Self {
-        Clock::new(self.hours, self.minutes + minutes)
+    pub fn new(hours: i32, minutes: i32) -> Self {
+        Clock::from_minutes(hours * MINUTES_IN_HOUR + minutes)
     }
 
-    pub fn to_minutes(&self) -> i32 {
-        self.hours * 60 + self.minutes
+    pub fn add_minutes(&self, minutes: i32) -> Self {
+        Clock::from_minutes(self.minutes + minutes)
+    }
+
+    pub fn hours(&self) -> i32 {
+        self.minutes.div_euclid(MINUTES_IN_HOUR)
+    }
+
+    pub fn minutes(&self) -> i32 {
+        self.minutes.rem_euclid(MINUTES_IN_HOUR)
     }
 }
 
 impl fmt::Display for Clock {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:02}:{:02}", self.hours, self.minutes)
-    }
-}
-
-impl fmt::Debug for Clock {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("Clock")
-            .field("hours", &self.hours)
-            .field("minutes", &self.minutes)
-            .finish()
-    }
-}
-
-impl PartialEq for Clock {
-    fn eq(&self, other: &Self) -> bool {
-        self.to_minutes() == other.to_minutes()
+        write!(f, "{:02}:{:02}", self.hours(), self.minutes())
     }
 }
