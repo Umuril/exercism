@@ -41,7 +41,7 @@ impl Beer {
 }
 
 pub fn sing(start: u32, end: u32) -> String {
-    (end..start + 1)
+    (end..=start)
         .rev()
         .map(verse)
         .collect::<Vec<String>>()
