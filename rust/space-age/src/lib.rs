@@ -19,11 +19,19 @@ impl From<u64> for Duration {
 }
 
 pub trait Planet {
-    fn years_during(d: &Duration) -> f64 {
-        d.years() / Self::ratio_to_earth()
-    }
+    const RATIO_TO_EARTH: f64;
 
-    fn ratio_to_earth() -> f64;
+    fn years_during(d: &Duration) -> f64 {
+        d.years() / Self::RATIO_TO_EARTH
+    }
+}
+
+macro_rules! planet {
+    ($planet_name:ty, $ratio:tt) => {
+        impl Planet for $planet_name {
+            const RATIO_TO_EARTH: f64 = $ratio;
+        }
+    };
 }
 
 pub struct Mercury;
@@ -35,44 +43,11 @@ pub struct Saturn;
 pub struct Uranus;
 pub struct Neptune;
 
-impl Planet for Mercury {
-    fn ratio_to_earth() -> f64 {
-        0.2408467
-    }
-}
-
-impl Planet for Venus {
-    fn ratio_to_earth() -> f64 {
-        0.61519726
-    }
-}
-impl Planet for Earth {
-    fn ratio_to_earth() -> f64 {
-        1.0
-    }
-}
-impl Planet for Mars {
-    fn ratio_to_earth() -> f64 {
-        1.8808158
-    }
-}
-impl Planet for Jupiter {
-    fn ratio_to_earth() -> f64 {
-        11.862615
-    }
-}
-impl Planet for Saturn {
-    fn ratio_to_earth() -> f64 {
-        29.447498
-    }
-}
-impl Planet for Uranus {
-    fn ratio_to_earth() -> f64 {
-        84.016846
-    }
-}
-impl Planet for Neptune {
-    fn ratio_to_earth() -> f64 {
-        164.79132
-    }
-}
+planet!(Mercury, 0.2408467);
+planet!(Venus, 0.61519726);
+planet!(Earth, 1.0);
+planet!(Mars, 1.8808158);
+planet!(Jupiter, 11.862615);
+planet!(Saturn, 29.447498);
+planet!(Uranus, 84.016846);
+planet!(Neptune, 164.79132);
